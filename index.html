@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee House | كوفي هاوس</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Coffee House Logo">
+        </div>
+        
+        <nav>
+            <ul id="nav-links">
+                <li><a href="#home" class="active">الرئيسية</a></li>
+                <li><a href="#hot-section">قهوة ساخنة</a></li>
+                <li><a href="#cold-section">قهوة باردة</a></li>
+                <li><a href="#juice-section">عصائر</a></li>
+                <li><a href="#drink-section">مشروبات</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-icons">
+            <div class="icon-btn" onclick="alert('خاصية البحث قادمة قريباً!')"><i class="fa-solid fa-magnifying-glass"></i></div>
+            
+            <div class="icon-btn fav-header-btn" onclick="toggleFavDrawer()">
+                <i class="fa-regular fa-heart"></i>
+                <span id="fav-count">0</span>
+            </div>
+
+            <div class="icon-btn cart-btn" onclick="toggleCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-count">0</span>
+            </div>
+
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>مرحباً بك..<br>ابدأ يومك بمشروب مميز</h1>
+            <p>اكتشف تشكيلة مميزة من المشروبات الساخنة والباردة بأجود الأنواع</p>
+            <a href="#hot-section" class="btn-primary">تصفح المنيو <i class="fa-solid fa-mug-hot"></i></a>
+        </div>
+    </section>
+
+    <section id="hot-section" class="products-section">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-mug-steam"></i> قهوة ساخنة</h2>
+            <p>أجود أنواع البن المحمص بعناية</p>
+        </div>
+        <div class="product-grid" id="hot-grid"></div>
+    </section>
+
+    <section id="cold-section" class="products-section alt-bg">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-glass-water"></i> قهوة باردة</h2>
+            <p>انتعاش وكافيين في كوب واحد</p>
+        </div>
+        <div class="product-grid" id="cold-grid"></div>
+    </section>
+
+    <section id="juice-section" class="products-section">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-lemon"></i> عصائر فريش</h2>
+            <p>طبيعية 100% بدون مواد حافظة</p>
+        </div>
+        <div class="product-grid" id="juice-grid"></div>
+    </section>
+
+    <section id="drink-section" class="products-section alt-bg">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-cocktail"></i> مشروبات أخرى</h2>
+            <p>تشكيلة مميزة من الشاي والموهيتو</p>
+        </div>
+        <div class="product-grid" id="drink-grid"></div>
+    </section>
+
+    <div class="cart-overlay" onclick="closeAllDrawers()"></div>
+    
+    <div class="drawer cart-drawer" id="cart-drawer">
+        <div class="drawer-header">
+            <h3>سلة طلباتي 🛒</h3>
+            <button class="close-btn" onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="cart-items-container">
+            <div class="empty-msg">السلة فارغة حالياً</div>
+        </div>
+        <div class="drawer-footer">
+            <div class="total-row">
+                <span>الإجمالي:</span>
+                <span id="cart-total">0 ج.م</span>
+            </div>
+            <button class="checkout-btn" onclick="alert('تم إرسال الطلب بنجاح!')">إتمام الطلب</button>
+        </div>
+    </div>
+
+    <div class="drawer fav-drawer" id="fav-drawer">
+        <div class="drawer-header fav-header-bg">
+            <h3>مفضلاتي ❤️</h3>
+            <button class="close-btn" onclick="toggleFavDrawer()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="fav-items-container">
+            <div class="empty-msg">لم تختر مفضلات بعد</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>صنع بحب في &copy; Coffee House 2025</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
