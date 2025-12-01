@@ -27,7 +27,7 @@
         </nav>
 
         <div class="header-icons">
-            <div class="icon-btn" onclick="alert('خاصية البحث قادمة قريباً!')"><i class="fa-solid fa-magnifying-glass"></i></div>
+            <div class="icon-btn" onclick="toggleSearch()"><i class="fa-solid fa-magnifying-glass"></i></div>
             
             <div class="icon-btn fav-header-btn" onclick="toggleFavDrawer()">
                 <i class="fa-regular fa-heart"></i>
@@ -89,6 +89,15 @@
         </div>
         <div class="product-grid" id="drink-grid"></div>
     </section>
+
+    <div class="search-overlay" id="search-overlay">
+        <button class="close-search" onclick="toggleSearch()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="ابحث عن مشروبك المفضل... (مثلاً: مانجو، لاتيه)">
+            <div class="search-results" id="search-results">
+                </div>
+        </div>
+    </div>
 
     <div class="cart-overlay" onclick="closeAllDrawers()"></div>
     

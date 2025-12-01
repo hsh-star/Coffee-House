@@ -1,4 +1,4 @@
-/* --- Coffee House Full Design (Final Version) --- */
+/* --- Coffee House Final Design + Search --- */
 :root {
     --bg-color: #FAF3E0;
     --card-bg: #FFFFFF;
@@ -15,7 +15,7 @@ body { background-color: var(--bg-color); color: var(--primary); overflow-x: hid
 a { text-decoration: none; color: inherit; transition: 0.3s; }
 ul { list-style: none; }
 
-/* --- Header Styling --- */
+/* Header */
 header {
     position: sticky; top: 0; z-index: 1000;
     background: rgba(255, 255, 255, 0.95);
@@ -23,15 +23,10 @@ header {
     padding: 0.5rem 5%;
     display: flex; justify-content: space-between; align-items: center;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    height: 120px; /* ارتفاع الهيدر الكبير */
+    height: 120px;
 }
 
-.logo img {
-    height: 110px; /* اللوجو الكبير */
-    width: auto;
-    object-fit: contain;
-    transition: transform 0.3s;
-}
+.logo img { height: 110px; width: auto; object-fit: contain; transition: transform 0.3s; }
 .logo img:hover { transform: scale(1.05); }
 
 nav ul { display: flex; gap: 30px; }
@@ -60,9 +55,42 @@ nav ul li a:hover::after { width: 100%; }
     border: 2px solid white;
 }
 
+/* --- Search Overlay (ستايل البحث الجديد) --- */
+.search-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.98); z-index: 2000;
+    display: none; flex-direction: column; align-items: center; padding-top: 100px;
+    overflow-y: auto; /* للسماح بالسكرول في النتائج */
+}
+.search-overlay.active { display: flex; }
+
+.search-container { width: 90%; max-width: 800px; text-align: center; }
+
+#search-input {
+    width: 100%; padding: 20px; font-size: 1.8rem;
+    border: none; border-bottom: 3px solid var(--primary);
+    background: transparent; outline: none; text-align: center;
+    color: var(--primary); font-family: 'Cairo', sans-serif; font-weight: 700;
+}
+
+.search-results {
+    margin-top: 50px; width: 100%;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;
+    padding-bottom: 50px;
+}
+
+.close-search {
+    position: absolute; top: 30px; left: 30px;
+    background: none; border: none; font-size: 2.5rem; color: var(--primary);
+    cursor: pointer; transition: 0.3s;
+}
+.close-search:hover { color: var(--fav-color); transform: rotate(90deg); }
+
 /* --- Hero Section --- */
+/* --- Hero Section (تم إصلاح الخلفية) --- */
 .hero {
     height: 85vh;
+    /* استخدام رابط صورة مباشر من الإنترنت لضمان ظهور الخلفية فوراً */
     background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80');
     background-size: cover;
     background-position: center;
@@ -76,34 +104,23 @@ nav ul li a:hover::after { width: 100%; }
     margin-bottom: 50px;
     margin-top: -20px;
 }
-
 .hero-content { max-width: 800px; padding: 20px; }
-
-.hero h1 {
-    font-size: 3.5rem; font-weight: 900; margin-bottom: 25px;
-    line-height: 1.5; text-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-
-.hero p {
-    font-size: 1.3rem; margin-bottom: 40px; opacity: 0.95;
-    line-height: 1.6; font-weight: 500;
-}
-
+.hero h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 25px; line-height: 1.5; text-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+.hero p { font-size: 1.3rem; margin-bottom: 40px; opacity: 0.95; line-height: 1.6; font-weight: 500; }
 .btn-primary {
     background: white; color: var(--primary); padding: 15px 45px;
     border-radius: 50px; font-weight: 800; font-size: 1.2rem;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3); display: inline-flex; align-items: center; gap: 10px;
-    transition: transform 0.3s;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3); display: inline-flex; align-items: center; gap: 10px; transition: transform 0.3s;
 }
 .btn-primary:hover { background: var(--bg-color); transform: translateY(-5px); }
 
-/* --- Products --- */
+/* Products */
 .products-section { padding: 60px 5%; }
 .alt-bg { background-color: #F5EBE0; border-radius: 50px; margin: 20px 0; }
 .section-header { text-align: center; margin-bottom: 40px; }
 .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
 
-/* --- Card --- */
+/* Card */
 .card {
     background: var(--card-bg); border-radius: var(--radius);
     overflow: hidden; box-shadow: var(--shadow); position: relative;
@@ -116,9 +133,9 @@ nav ul li a:hover::after { width: 100%; }
 .price { color: var(--secondary); font-weight: 800; font-size: 1.4rem; margin-bottom: 15px; display: block; }
 
 .card-fav-btn {
-    position: absolute; top: 15px; left: 15px;
-    width: 40px; height: 40px; background: white; border-radius: 50%;
-    border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 15px; left: 15px; width: 40px; height: 40px;
+    background: white; border-radius: 50%; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 3px 10px rgba(0,0,0,0.2); transition: 0.2s; z-index: 5;
 }
 .card-fav-btn i { color: #ccc; font-size: 1.3rem; }
@@ -132,19 +149,18 @@ nav ul li a:hover::after { width: 100%; }
 }
 .add-to-cart:hover { background-color: var(--secondary); }
 
-/* --- Feedback Float Button --- */
+/* Feedback Float */
 .feedback-float {
     position: fixed; bottom: 30px; left: 30px;
     background-color: var(--primary); color: white; padding: 12px 20px;
     border-radius: 50px; display: flex; align-items: center; gap: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 2000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 100;
     transition: transform 0.3s; font-weight: bold; text-decoration: none;
 }
 .feedback-float:hover { transform: translateY(-5px); background-color: var(--secondary); }
-.feedback-float i { font-size: 1.2rem; }
 .mobile-only { display: none; }
 
-/* --- Drawers --- */
+/* Drawers */
 .cart-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.5); z-index: 1001; display: none; backdrop-filter: blur(2px);
@@ -156,10 +172,8 @@ nav ul li a:hover::after { width: 100%; }
     background: white; z-index: 1002; transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1);
     display: flex; flex-direction: column; box-shadow: 0 0 30px rgba(0,0,0,0.2);
 }
-.cart-drawer { right: -450px; }
-.cart-drawer.open { right: 0; }
-.fav-drawer { left: -450px; }
-.fav-drawer.open { left: 0; }
+.cart-drawer { right: -450px; } .cart-drawer.open { right: 0; }
+.fav-drawer { left: -450px; } .fav-drawer.open { left: 0; }
 
 .drawer-header { padding: 25px; display: flex; justify-content: space-between; align-items: center; background: var(--primary); color: white; }
 .fav-header-bg { background: var(--fav-color); }
@@ -177,24 +191,22 @@ nav ul li a:hover::after { width: 100%; }
 
 footer { text-align: center; padding: 40px; background: var(--primary); color: white; margin-top: 50px; }
 
-/* --- Mobile --- */
+/* Mobile */
 .mobile-toggle { display: none; }
 @media (max-width: 768px) {
     header { padding: 0.5rem 1rem; height: 80px; }
     .logo img { height: 60px; }
-    
     nav { 
-        position: fixed; top: 80px; right: -100%; width: 100%; height: calc(100vh - 80px);
-        background: white; flex-direction: column; padding: 40px; transition: 0.3s;
-        justify-content: flex-start; gap: 40px;
+        position: fixed; top: 0; right: -100%; width: 75%; height: 100vh;
+        background: white; flex-direction: column; padding: 80px 20px; transition: 0.3s;
+        justify-content: flex-start; gap: 30px; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1001;
     }
     nav.active { right: 0; }
-    nav ul { flex-direction: column; align-items: center; width: 100%; }
-    
-    .mobile-toggle { display: block; font-size: 1.5rem; color: var(--primary); }
+    nav ul { flex-direction: column; align-items: center; width: 100%; gap: 25px; }
+    .mobile-toggle { display: block; font-size: 1.8rem; color: var(--primary); cursor: pointer; }
     .hero h1 { font-size: 2.5rem; }
     .drawer { width: 100%; }
     .hero { margin-top: 0; }
     .feedback-float { display: none; }
-    .mobile-only { display: block; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; width: 100%; text-align: center; }
+    .mobile-only { display: block; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px; width: 100%; text-align: center; font-weight: bold; }
 }

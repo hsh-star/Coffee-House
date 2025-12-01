@@ -50,7 +50,7 @@ const products = {
     ]
 };
 
-// --- الحالة (State) ---
+// --- الحالة ---
 let cart = [];
 let favorites = JSON.parse(localStorage.getItem('coffeeFavs')) || [];
 
@@ -62,29 +62,73 @@ document.addEventListener('DOMContentLoaded', () => {
     updateFavHeader();
 });
 
+// --- عرض المنتجات ---
 function renderSection(id, items) {
     const container = document.getElementById(id);
     items.forEach(item => {
-        const isFav = favorites.includes(item.name);
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav(this, '${item.name}')">
-                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
-            </button>
-            <img src="${item.img}" alt="${item.name}">
-            <div class="card-info">
-                <h3>${item.name}</h3>
-                <div class="price">${item.price} ج.م</div>
-                <button class="add-to-cart" onclick="addToCart('${item.name}', ${item.price}, '${item.img}')">
-                    إضافة للسلة <i class="fa-solid fa-plus"></i>
-                </button>
-            </div>
-        `;
-        container.appendChild(card);
+        container.appendChild(createProductCard(item));
     });
 }
 
+// دالة مساعدة لإنشاء كارت المنتج (عشان نستخدمها في البحث كمان)
+function createProductCard(item) {
+    const isFav = favorites.includes(item.name);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+        <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="toggleFav(this, '${item.name}')">
+            <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+        </button>
+        <img src="${item.img}" alt="${item.name}">
+        <div class="card-info">
+            <h3>${item.name}</h3>
+            <div class="price">${item.price} ج.م</div>
+            <button class="add-to-cart" onclick="addToCart('${item.name}', ${item.price}, '${item.img}')">
+                إضافة للسلة <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+    `;
+    return card;
+}
+
+// --- البحث (Search Logic) ---
+function toggleSearch() {
+    const overlay = document.getElementById('search-overlay');
+    overlay.classList.toggle('active');
+    
+    if(overlay.classList.contains('active')) {
+        document.getElementById('search-input').focus();
+    } else {
+        // تفريغ البحث عند الإغلاق
+        document.getElementById('search-input').value = '';
+        document.getElementById('search-results').innerHTML = '';
+    }
+}
+
+// تفعيل البحث عند الكتابة
+document.getElementById('search-input').addEventListener('input', function(e) {
+    const term = e.target.value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = ''; // مسح النتائج القديمة
+
+    if(term.length < 2) return; // ابدأ البحث بعد حرفين
+
+    // تجميع كل المنتجات في مصفوفة واحدة
+    const allProducts = [...products.hot, ...products.cold, ...products.juices, ...products.drinks];
+    
+    // فلترة المنتجات حسب الاسم
+    const filteredProducts = allProducts.filter(product => product.name.includes(term));
+
+    if(filteredProducts.length === 0) {
+        resultsContainer.innerHTML = '<p style="text-align:center;width:100%;color:#666;">لا توجد نتائج مطابقة</p>';
+    } else {
+        filteredProducts.forEach(item => {
+            resultsContainer.appendChild(createProductCard(item));
+        });
+    }
+});
+
+// --- باقي الدوال (المفضلة والسلة والقوائم) ---
 function toggleFav(btn, name) {
     const icon = btn.querySelector('i');
     if (favorites.includes(name)) {
@@ -178,7 +222,6 @@ function removeFromCart(index) {
     updateCartDrawer();
 }
 
-// --- تفعيل قائمة الموبايل وإغلاق القوائم ---
 function toggleCart() {
     document.getElementById('cart-drawer').classList.toggle('open');
     document.querySelector('.cart-overlay').classList.toggle('open');
@@ -199,12 +242,12 @@ function closeAllDrawers() {
     document.getElementById('fav-drawer').classList.remove('open');
     document.querySelector('.cart-overlay').classList.remove('open');
     document.querySelector('nav').classList.remove('active');
+    document.getElementById('search-overlay').classList.remove('active'); // إغلاق البحث أيضاً
 }
 
 function toggleMenu() {
     const nav = document.querySelector('nav');
     nav.classList.toggle('active');
-    // إغلاق أي قوائم مفتوحة لمنع التداخل
     document.getElementById('cart-drawer').classList.remove('open');
     document.getElementById('fav-drawer').classList.remove('open');
     document.querySelector('.cart-overlay').classList.remove('open');
