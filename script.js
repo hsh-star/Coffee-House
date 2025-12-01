@@ -1,4 +1,4 @@
-// --- بيانات المنتجات (الآن تقرأ من مجلد images) ---
+// --- بيانات المنتجات ---
 const products = {
     hot: [
         { name: "فلات وايت", price: 75, img: "images/hot1.jpg" },
@@ -54,7 +54,6 @@ const products = {
 let cart = [];
 let favorites = JSON.parse(localStorage.getItem('coffeeFavs')) || [];
 
-// --- تشغيل عند التحميل ---
 document.addEventListener('DOMContentLoaded', () => {
     renderSection('hot-grid', products.hot);
     renderSection('cold-grid', products.cold);
@@ -63,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateFavHeader();
 });
 
-// --- عرض المنتجات ---
 function renderSection(id, items) {
     const container = document.getElementById(id);
     items.forEach(item => {
@@ -87,16 +85,13 @@ function renderSection(id, items) {
     });
 }
 
-// --- منطق المفضلة (Favorites Logic) ---
 function toggleFav(btn, name) {
     const icon = btn.querySelector('i');
     if (favorites.includes(name)) {
-        // حذف
         favorites = favorites.filter(n => n !== name);
         btn.classList.remove('active');
         icon.classList.replace('fa-solid', 'fa-regular');
     } else {
-        // إضافة
         favorites.push(name);
         btn.classList.add('active');
         icon.classList.replace('fa-regular', 'fa-solid');
@@ -119,7 +114,6 @@ function renderFavDrawer() {
         return;
     }
 
-    // تجميع كل المنتجات للبحث فيها
     const all = [...products.hot, ...products.cold, ...products.juices, ...products.drinks];
     
     favorites.forEach(name => {
@@ -141,11 +135,10 @@ function renderFavDrawer() {
     });
 }
 
-// --- منطق السلة (Cart Logic) ---
 function addToCart(name, price, img) {
     cart.push({ name, price, img });
     updateCartDrawer();
-    toggleCart(); // فتح السلة عند الإضافة
+    toggleCart(); 
 }
 
 function updateCartDrawer() {
@@ -185,28 +178,34 @@ function removeFromCart(index) {
     updateCartDrawer();
 }
 
-// --- التحكم في القوائم (Drawers) ---
+// --- تفعيل قائمة الموبايل وإغلاق القوائم ---
 function toggleCart() {
     document.getElementById('cart-drawer').classList.toggle('open');
     document.querySelector('.cart-overlay').classList.toggle('open');
-    // اقفل المفضلة لو مفتوحة
     document.getElementById('fav-drawer').classList.remove('open');
+    document.querySelector('nav').classList.remove('active');
 }
 
 function toggleFavDrawer() {
-    renderFavDrawer(); // تحديث المحتوى قبل الفتح
+    renderFavDrawer();
     document.getElementById('fav-drawer').classList.toggle('open');
     document.querySelector('.cart-overlay').classList.toggle('open');
-    // اقفل السلة لو مفتوحة
     document.getElementById('cart-drawer').classList.remove('open');
+    document.querySelector('nav').classList.remove('active');
 }
 
 function closeAllDrawers() {
     document.getElementById('cart-drawer').classList.remove('open');
     document.getElementById('fav-drawer').classList.remove('open');
     document.querySelector('.cart-overlay').classList.remove('open');
+    document.querySelector('nav').classList.remove('active');
 }
 
 function toggleMenu() {
-    alert("القائمة للموبايل قريباً!");
+    const nav = document.querySelector('nav');
+    nav.classList.toggle('active');
+    // إغلاق أي قوائم مفتوحة لمنع التداخل
+    document.getElementById('cart-drawer').classList.remove('open');
+    document.getElementById('fav-drawer').classList.remove('open');
+    document.querySelector('.cart-overlay').classList.remove('open');
 }
